@@ -1,0 +1,80 @@
+<div class="sidebar text-white" [class.open]="sidebar.isOpen()">
+
+  <!-- Sidebar Header -->
+  <div class="sidebar-header p-4 d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">إدارة التدريب</h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="sidebar.isOpen.set(false)">
+    </button>
+  </div>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-body p-0">
+    <nav class="nav flex-column">
+
+      <!-- الاعدادات والتحكم -->
+      <a class="nav-link text-white py-3 px-4 d-flex align-items-center"
+         data-bs-toggle="collapse"
+         href="#settingsMenu"
+         role="button">
+        <i class="fas fa-cog" style="width: 20px;"></i>
+        <span class="me-3">الاعدادات والتحكم</span>
+        <i class="fas fa-chevron-down me-auto"></i>
+      </a>
+
+      <div class="collapse" id="settingsMenu">
+        <nav class="nav flex-column">
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center">
+            <i class="fas fa-th" style="width: 20px;"></i>
+            <span class="me-3">القاعات</span>
+          </a>
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center">
+            <i class="fas fa-question-circle" style="width: 20px;"></i>
+            <span class="me-3">الاستبيانات</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- الدورات -->
+      <a class="nav-link text-white py-3 px-4 d-flex align-items-center"
+         data-bs-toggle="collapse"
+         href="#coursesMenu"
+         role="button">
+        <i class="fas fa-graduation-cap" style="width: 20px;"></i>
+        <span class="me-3">الدورات</span>
+        <i class="fas fa-chevron-down me-auto"></i>
+      </a>
+
+      <div class="collapse" id="coursesMenu">
+        <nav class="nav flex-column">
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center active">
+            <i class="fas fa-chalkboard" style="width: 20px;"></i>
+            <span class="me-3">الدورات</span>
+          </a>
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center">
+            <i class="far fa-circle" style="width: 20px;"></i>
+            <span class="me-3">البرامج التدريسية</span>
+          </a>
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center">
+            <i class="fas fa-users" style="width: 20px;"></i>
+            <span class="me-3">المحاضرين</span>
+          </a>
+          <a class="nav-link text-white py-3 px-4 d-flex align-items-center">
+            <i class="fas fa-user-graduate" style="width: 20px;"></i>
+            <span class="me-3">الطلاب</span>
+          </a>
+        </nav>
+      </div>
+
+    </nav>
+  </div>
+
+</div>
+
+<!-- Backdrop -->
+<div class="sidebar-backdrop"
+     *ngIf="sidebar.isOpen()"
+     (click)="sidebar.isOpen.set(false)">
+</div>

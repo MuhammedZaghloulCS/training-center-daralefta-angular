@@ -1,0 +1,44 @@
+<!-- Top Bar Header -->
+<nav class="navbar navbar-light bg-white top-bar sticky-top px-3 py-2">
+  <div class="container-fluid">
+    <!-- Left Side - User Actions -->
+    <div class="d-flex align-items-center gap-3">
+      <!-- User Avatar -->
+      <div class="user-avatar d-flex align-items-center justify-content-center">
+        <i class="fas fa-user text-secondary"></i>
+      </div>
+
+      <!-- Messages with Badge -->
+      <button class="btn btn-link text-secondary p-2 position-relative" type="button">
+        <i class="fas fa-comment fs-5"></i>
+        <span
+          class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 10px"
+        >
+          5
+        </span>
+      </button>
+
+      <!-- Notifications with Badge -->
+      <button class="btn btn-link text-secondary p-2 position-relative" type="button">
+        <i class="fas fa-bell fs-5"></i>
+        <span
+          class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 10px"
+        >
+          15
+        </span>
+      </button>
+      <!-- Search Button -->
+      <button class="btn btn-link text-secondary p-2" type="button">
+        <i class="fas fa-search fs-5"></i>
+      </button>
+    </div>
+
+    <!-- Right Side - Menu Toggle -->
+    <button class="btn btn-link text-dark text-decoration-none p-2" type="button" (click)="toggleSidebar()">
+      <span class="ms-1 me-1">إدارة التدريب</span>
+      <i class="fas fa-bars ms-2"></i>
+    </button>
+  </div>
+</nav>
