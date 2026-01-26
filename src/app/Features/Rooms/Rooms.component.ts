@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import{SahredTableComponent} from '../../Shared/sahred-table/sahred-table.component';
-import{MainLayoutComponent} from'../../Layout/Main-layout/Main-layout.component';
+import{MainLayoutComponent} from'../../Shared/Main-layout/Main-layout.component';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-Rooms',
+    standalone: true, 
   templateUrl: './Rooms.component.html',
   styleUrls: ['./Rooms.component.css'],
-  imports: [SahredTableComponent,MainLayoutComponent]
+  imports: [SahredTableComponent,MainLayoutComponent,FormsModule]
 })
 export class RoomsComponent implements OnInit {
 
@@ -16,7 +18,7 @@ export class RoomsComponent implements OnInit {
   ];
   public columns: string[] = ['#', 'اسم القاعة', 'السعة','المكان','المبني','بها بروجيكتور'];
   showModal: boolean = false;
-  
+  haveProjector: boolean = true;
   constructor() { }
 
   ngOnInit() {
@@ -24,13 +26,14 @@ export class RoomsComponent implements OnInit {
   }
   
   openModal() {
-    this.showModal = true;
-  }
+  this.showModal = true;
+  document.body.classList.add('modal-open');
+}
 
-  closeModal() {
-    this.showModal = false;
-  }
-
+closeModal() {
+  this.showModal = false;
+  document.body.classList.remove('modal-open');
+}
   onEdit(row: any) {
     console.log('Edit:', row);
     this.openModal(); 
