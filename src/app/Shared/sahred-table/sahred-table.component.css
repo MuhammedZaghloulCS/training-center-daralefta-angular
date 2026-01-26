@@ -1,0 +1,18 @@
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.table-responsive {
+  width: 90%;
+  overflow-x: auto;
+  margin: 0 auto;
+}
+
+table {
+  white-space: nowrap;
+}
+.actions-cell {
+  width: 1%;
+  white-space: nowrap;
+}

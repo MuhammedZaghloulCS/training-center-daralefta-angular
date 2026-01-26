@@ -1,0 +1,67 @@
+<!-- تعديل: إضافة (buttonClick)="openModal()" لربط الزرار بفتح الـ Modal -->
+<app-Main-layout 
+  [pageTitle]="'إدارة القاعات'" 
+  [buttonText]="'إضافة قاعة'"
+  (buttonClick)="openModal()">
+</app-Main-layout>
+
+<!-- تعديل: إضافة (edit) و (delete) للتعامل مع أحداث التعديل والحذف -->
+<app-sahred-table 
+  [tableData]="roomsData" 
+  [columns]="columns"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)">
+</app-sahred-table>
+
+<!-- إضافة: Modal كامل -->
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" 
+     id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="roomModalLabel">بيانات الغرفة</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="roomId" value="" />
+        <div class="form-group">
+          <label for="roomName">اسم القاعة</label>
+          <input type="text" class="form-control" id="roomName" />
+        </div>
+        <div class="form-group">
+          <label for="roomCapacity">سعة الغرفة</label>
+          <input type="number" class="form-control" id="roomCapacity" />
+        </div>
+        <div class="form-group">
+          <label for="roomLocation">المكان</label>
+          <input type="text" class="form-control" id="roomLocation" />
+        </div>
+        <div class="form-group">
+          <label for="BuildId">المبني</label>
+          <select class="form-control" id="BuildId">
+            <option>اختر المبني</option>
+          </select>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="haveProjector" />
+          <label class="form-check-label" for="haveProjector">
+            هل تحتوي الغرفة على بروجكتور؟
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer text-center">
+        <div class="row text-center" style="width: 100%">
+          <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary" id="saveRoomBtn">حفظ</button>
+            <button type="button" class="btn btn-danger" (click)="closeModal()">الغاء</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة: خلفية الـ Modal -->
+<div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal"></div>

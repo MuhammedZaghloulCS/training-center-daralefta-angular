@@ -1,0 +1,12 @@
+<div class="main " dir="rtl">
+  
+<h3 class="mb-0">{{ pageTitle }}</h3>
+
+      <button class="btn btn-primary m-3" (click)="onButtonClick()">
+        <i class="fa fa-plus"></i> {{ buttonText }}
+      </button>
+</div>
+<div class="pagination d-flex justify-content-between mb-3" dir="rtl">
+    <div id="dataTable_filter" class="dataTables_filter"><label>ابحث:<input type="search" class="" placeholder="مثال بحث" aria-controls="dataTable"></label></div>
+  <div class="dataTables_length" id="dataTable_length"><label>أظهر <select name="dataTable_length" aria-controls="dataTable" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> مدخلات</label></div>
+</div>
