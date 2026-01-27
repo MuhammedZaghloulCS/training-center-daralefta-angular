@@ -1,17 +1,25 @@
-<app-Main-layout 
+<app-main-layout 
   [pageTitle]="'إدارة القاعات'" 
   [buttonText]="'إضافة قاعة'"
-  (buttonClick)="openModal()">
-</app-Main-layout>
+  (buttonClick)="openModal()"
+  (pageSizeChange)="onPageSizeChanged($event)"
+  >
+</app-main-layout>
 
 <app-sahred-table 
-  [tableData]="roomsData" 
+  [tableData]="roomsData().data" 
   [columns]="columns"
   (edit)="onEdit($event)"
   (delete)="onDelete($event)">
 </app-sahred-table>
-
-<!-- MODAL -->
+  <app-afterTable
+    [totalItems]="roomsData().totalItems"
+    [itemsPerPage]="roomsData().data.length"
+    [currentPage]="roomsData().currentPage"
+    [pageSize]="roomsData().pageSize"
+    [hasPrevious]="roomsData().hasPrevious"
+    [hasNext]="roomsData().hasNext">
+<!-- MODAL إضافة/تعديل -->
 <div
   class="modal fade"
   [class.show]="showModal"
@@ -44,11 +52,6 @@
         </div>
 
         <div class="form-group mb-2">
-          <label>المكان</label>
-          <input type="text" class="form-control" />
-        </div>
-
-        <div class="form-group mb-2">
           <label>المبني</label>
           <select class="form-control">
             <option>اختر المبني</option>
@@ -78,5 +81,39 @@
   </div>
 </div>
 
-<!-- BACKDROP -->
-<div class="modal-backdrop fade show" *ngIf="showModal"></div>
+
+<!-- MODAL تأكيد الحذف -->
+<div
+  class="modal fade"
+  [class.show]="showDeleteModal"
+  [style.display]="showDeleteModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog"
+>
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">تأكيد الحذف</h5>
+        <button type="button" class="close" (click)="closeDeleteModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف هذه القاعة؟</p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer text-center">
+        <button class="btn btn-danger me-2" (click)="confirmDelete()">حذف</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">إلغاء</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

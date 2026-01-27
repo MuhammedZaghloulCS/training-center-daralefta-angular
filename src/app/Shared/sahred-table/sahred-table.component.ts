@@ -24,6 +24,7 @@ export class SahredTableComponent implements OnInit {
   }
   
   onDelete(row: any) {
+    debugger;
     this.delete.emit(row);
   }
 }

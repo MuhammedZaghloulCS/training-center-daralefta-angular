@@ -74,7 +74,9 @@
 </div>
 
 <!-- Backdrop -->
+  @if(sidebar.isOpen()) {
 <div class="sidebar-backdrop"
-     *ngIf="sidebar.isOpen()"
+    
      (click)="sidebar.isOpen.set(false)">
 </div>
+  }

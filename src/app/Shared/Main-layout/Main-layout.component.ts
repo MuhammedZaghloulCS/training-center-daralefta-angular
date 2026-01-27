@@ -1,22 +1,28 @@
-import { Component, OnInit, Input,Output,EventEmitter} from '@angular/core';
- 
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-Main-layout',
+  selector: 'app-main-layout',
+  standalone: true,
   templateUrl: './Main-layout.component.html',
-  styleUrls: ['./Main-layout.component.css']
+  styleUrls: ['./Main-layout.component.css'],
+  imports: [FormsModule]
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent {
+
   @Input() pageTitle: string = '';
   @Input() buttonText: string = '';
 
   @Output() buttonClick = new EventEmitter<void>();
-  
+  @Output() pageSizeChange = new EventEmitter<number>();
+
+  constructor() {}
+
+  onChange(event: Event) {
+    const value = Number((event.target as HTMLSelectElement).value);
+    this.pageSizeChange.emit(value);
+  }
+
   onButtonClick() {
     this.buttonClick.emit();
-  }
-  
-  constructor() { }
-
-  ngOnInit() {
   }
 }

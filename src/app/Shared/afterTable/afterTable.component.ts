@@ -11,7 +11,9 @@ export class AfterTableComponent implements OnInit {
   @Input() totalItems: number = 0;
   @Input() itemsPerPage: number = 10;
   @Input() currentPage: number = 1;
-
+  @Input() pageSize: number=10;
+  @Input() hasPrevious: boolean = false;
+  @Input() hasNext: boolean = false;
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
