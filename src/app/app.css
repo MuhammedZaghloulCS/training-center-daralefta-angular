@@ -9,6 +9,16 @@ html, body {
   flex-direction: column;
 }
 
+.page.no-layout {
+  background: #fff;
+}
+
 .content {
   flex: 1;  /* ← دي اللي بتزق الفوتر لتحت */
+}
+
+.content.full-screen {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }

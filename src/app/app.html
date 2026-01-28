@@ -1,11 +1,13 @@
-<div class="page">
-
-  <app-header></app-header>
-    <app-sidebar></app-sidebar>
-  <main class="content">
-    <app-Rooms></app-Rooms>
-
+<div class="page" [class.no-layout]="isNotFoundPage()">
+ @if (!isNotFoundPage()) {
+  <app-header ></app-header>
+  <app-sidebar></app-sidebar>
+ }
+  <main class="content" [class.full-screen]="isNotFoundPage()">
+    <router-outlet></router-outlet>
   </main>
-  <app-Footer></app-Footer>
+  @if (!isNotFoundPage()) {
+    <app-Footer *ngIf=""></app-Footer>
+  }
 
 </div>

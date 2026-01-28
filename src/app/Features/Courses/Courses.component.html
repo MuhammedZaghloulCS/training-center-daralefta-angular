@@ -1,0 +1,158 @@
+<app-main-layout 
+  [pageTitle]="'إدارة الدورات'" 
+  [buttonText]="'إضافة دورة'"
+  (buttonClick)="openModal()"
+  (pageSizeChange)="onPageSizeChanged($event)"
+  (search)="onSearch($event)">
+</app-main-layout>
+
+<app-sahred-table 
+  [tableData]="displayedCourses" 
+  [columns]="columns"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)">
+</app-sahred-table>
+
+<app-afterTable
+  [totalItems]="coursesData().totalItems"
+  [currentPage]="coursesData().currentPage"
+  [pageSize]="coursesData().pageSize"
+  [hasPrevious]="coursesData().hasPrevious"
+  [hasNext]="coursesData().hasNext"
+  (nextPageCounter)="onNextPage($event)"
+  (previousPageCounter)="onPreviousPage($event)"/>
+
+<!-- MODAL إضافة/تعديل -->
+<div
+  class="modal fade"
+  [class.show]="showModal"
+  [style.display]="showModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">{{ isEditMode ? 'تعديل بيانات الدورة' : 'إضافة دورة جديدة' }}</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <form #courseForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group mb-2">
+            <label>اسم الدورة <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="courseName"
+              name="courseName"
+              #courseNameInput="ngModel"
+              required
+              [class.is-invalid]="courseNameInput.invalid && courseNameInput.touched" />
+            <div class="invalid-feedback" *ngIf="courseNameInput.invalid && courseNameInput.touched">
+              <small>يجب إدخال اسم الدورة</small>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>الوصف <span class="text-danger">*</span></label>
+            <textarea 
+              class="form-control"
+              [(ngModel)]="courseDescription"
+              name="courseDescription"
+              #courseDescriptionInput="ngModel"
+              required
+              [class.is-invalid]="courseDescriptionInput.invalid && courseDescriptionInput.touched"></textarea>
+            <div class="invalid-feedback" *ngIf="courseDescriptionInput.invalid && courseDescriptionInput.touched">
+              <small>يجب إدخال وصف الدورة</small>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>المتطلبات <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control"
+              [(ngModel)]="coursePrerequisites"
+              name="coursePrerequisites"
+              #coursePrerequisitesInput="ngModel"
+              required
+              [class.is-invalid]="coursePrerequisitesInput.invalid && coursePrerequisitesInput.touched" />
+            <div class="invalid-feedback" *ngIf="coursePrerequisitesInput.invalid && coursePrerequisitesInput.touched">
+              <small>يجب إدخال متطلبات الدورة</small>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>المدة (ساعة) <span class="text-danger">*</span></label>
+            <input 
+              type="number" 
+              class="form-control"
+              [(ngModel)]="courseDuration"
+              name="courseDuration"
+              #courseDurationInput="ngModel"
+              required
+              min="1"
+              [class.is-invalid]="courseDurationInput.invalid && courseDurationInput.touched" />
+            <div class="invalid-feedback" *ngIf="courseDurationInput.invalid && courseDurationInput.touched">
+              <small *ngIf="courseDurationInput.errors?.['required']">يجب إدخال مدة الدورة</small>
+              <small *ngIf="courseDurationInput.errors?.['min']">المدة يجب أن تكون أكبر من صفر</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer text-center">
+          <button 
+            class="btn btn-primary me-2" 
+            type="button"
+            (click)="saveCourse()"
+            [disabled]="courseForm.invalid">
+            حفظ
+          </button>
+          <button class="btn btn-danger" type="button" (click)="closeModal()">إلغاء</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL تأكيد الحذف -->
+<div
+  class="modal fade"
+  [class.show]="showDeleteModal"
+  [style.display]="showDeleteModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">تأكيد الحذف</h5>
+        <button type="button" class="close" (click)="closeDeleteModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف هذه الدورة؟</p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer text-center">
+        <button class="btn btn-danger me-2" (click)="confirmDelete()">حذف</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">إلغاء</button>
+      </div>
+
+    </div>
+  </div>
+</div>
