@@ -14,6 +14,7 @@ export class MainLayoutComponent {
 
   @Output() buttonClick = new EventEmitter<void>();
   @Output() pageSizeChange = new EventEmitter<number>();
+  @Output() search = new EventEmitter<string>();
 
   constructor() {}
 
@@ -24,5 +25,10 @@ export class MainLayoutComponent {
 
   onButtonClick() {
     this.buttonClick.emit();
+  }
+
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.search.emit(value);
   }
 }

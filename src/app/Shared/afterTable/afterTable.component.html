@@ -1,16 +1,18 @@
 <div class="d-flex justify-content-between pagination">
   <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
-    يعرض 0 إلى 0 من أصل 0 مُدخل
+    يعرض {{fromNumber}} إلى {{toNumber}} من أصل {{totalItems}} مُدخل
   </div>
   <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+        <div class="btn btn-primary" [ngClass]="{disabled: !hasNext}" (click)="nextPage()">التالي</div>
+
+    
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <div
       class="btn btn-primary"
-      [ngClass]="{ disabled: currentPage === 1 }"
+      [ngClass]="{disabled: !hasPrevious}" 
       (click)="previousPage()"
     >
       السابق
     </div>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <div class="btn btn-primary" (click)="nextPage()">التالي</div>
   </div>
 </div>

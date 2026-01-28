@@ -3,5 +3,6 @@ export class RoomVM {
   name!: string;
   capacity!: number;
   location!: string;
+  Building!: string;
   projectorStatus!: string;
 }

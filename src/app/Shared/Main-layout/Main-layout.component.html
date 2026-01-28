@@ -7,7 +7,11 @@
       </button>
 </div>
 <div class="pagination d-flex justify-content-between mb-3" dir="rtl">
-    <div id="dataTable_filter" class="dataTables_filter"><label>ابحث:<input type="search" class="" placeholder="مثال بحث" aria-controls="dataTable"></label></div>
+    <div id="dataTable_filter" class="dataTables_filter">
+      <label>ابحث:
+        <input type="text" class="" placeholder="مثال بحث" aria-controls="dataTable" (input)="onSearch($event)" />
+      </label>
+    </div>
   <div class="dataTables_length" id="dataTable_length"><label>أظهر     
     <select (change)="onChange($event)">
       <option [value]="10">10</option>

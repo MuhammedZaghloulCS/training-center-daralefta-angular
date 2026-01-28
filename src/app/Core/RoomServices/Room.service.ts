@@ -33,7 +33,7 @@ export class RoomService {
 
   getRooms(): Observable<RoomVM[]> {
   return this.http
-    .get<ApiResponseDto<RoomDTO[]>>('/api/rooms')
+    .get<ApiResponseDto<RoomDTO[]>>(`${this.apiUrl}`)
     .pipe(
       map(response => RoomMapper.fromDtoList(response.data))
     );
@@ -57,7 +57,7 @@ export class RoomService {
 
   // تعديل قاعة
   updateRoom(id: number, room: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, room);
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, room);
   }
 
   // حذف قاعة

@@ -1,7 +1,7 @@
 export interface RoomDTO {
   id: number;
-  createdBy: string;
-  createdDate: string;
+  createdBy: string | null;
+  createdDate: string| null;   // ISO string
   updatedBy: string | null;
   updatedAt: string | null;
   name: string;
@@ -9,4 +9,5 @@ export interface RoomDTO {
   location: string;
   buildId: number;
   haveProjector: boolean;
+  building: any|null;
 }

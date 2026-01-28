@@ -3,84 +3,154 @@
   [buttonText]="'إضافة قاعة'"
   (buttonClick)="openModal()"
   (pageSizeChange)="onPageSizeChanged($event)"
-  >
+  (search)="onSearch($event)">
 </app-main-layout>
 
 <app-sahred-table 
-  [tableData]="roomsData().data" 
+  [tableData]="displayedRooms" 
   [columns]="columns"
   (edit)="onEdit($event)"
   (delete)="onDelete($event)">
 </app-sahred-table>
-  <app-afterTable
-    [totalItems]="roomsData().totalItems"
-    [itemsPerPage]="roomsData().data.length"
-    [currentPage]="roomsData().currentPage"
-    [pageSize]="roomsData().pageSize"
-    [hasPrevious]="roomsData().hasPrevious"
-    [hasNext]="roomsData().hasNext">
+
+<app-afterTable
+  [totalItems]="roomsData().totalItems"
+  [currentPage]="roomsData().currentPage"
+  [pageSize]="roomsData().pageSize"
+  [hasPrevious]="roomsData().hasPrevious"
+  [hasNext]="roomsData().hasNext"
+  (nextPageCounter)="onNextPage($event)"
+  (previousPageCounter)="onPreviousPage($event)"/>
+
 <!-- MODAL إضافة/تعديل -->
+ <!-- handle modal to update row-->
+  
 <div
   class="modal fade"
   [class.show]="showModal"
   [style.display]="showModal ? 'block' : 'none'"
   tabindex="-1"
-  role="dialog"
->
+  role="dialog">
 
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
       <!-- HEADER -->
       <div class="modal-header d-flex justify-content-between">
-        <h5 class="modal-title">بيانات الغرفة</h5>
+        <h5 class="modal-title">{{ isEditMode ? 'تعديل بيانات الغرفة' : 'إضافة غرفة جديدة' }}</h5>
         <button type="button" class="close" (click)="closeModal()">
           <span>&times;</span>
         </button>
       </div>
 
       <!-- BODY -->
-      <div class="modal-body">
-        <div class="form-group mb-2">
-          <label>اسم القاعة</label>
-          <input type="text" class="form-control" />
+      <!-- ✅ إضافة form مع ngForm للـ validation -->
+      <form #roomForm="ngForm">
+        <div class="modal-body">
+          <!-- ✅ إضافة validation لاسم القاعة -->
+          <div class="form-group mb-2">
+            <label>اسم القاعة <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="roomName"
+              name="roomName"
+              #roomNameInput="ngModel"
+              required
+              [class.is-invalid]="roomNameInput.invalid && roomNameInput.touched" />
+            <div class="invalid-feedback" *ngIf="roomNameInput.invalid && roomNameInput.touched">
+              <small>يجب إدخال اسم القاعة</small>
+            </div>
+          </div>
+
+          <!-- ✅ إضافة validation لسعة الغرفة -->
+          <div class="form-group mb-2">
+            <label>سعة الغرفة <span class="text-danger">*</span></label>
+            <input 
+              type="number" 
+              class="form-control"
+              [(ngModel)]="roomCapacity"
+              name="roomCapacity"
+              #roomCapacityInput="ngModel"
+              required
+              min="1"
+              [class.is-invalid]="roomCapacityInput.invalid && roomCapacityInput.touched" />
+            <div class="invalid-feedback" *ngIf="roomCapacityInput.invalid && roomCapacityInput.touched">
+              <small *ngIf="roomCapacityInput.errors?.['required']">يجب إدخال سعة الغرفة</small>
+              <small *ngIf="roomCapacityInput.errors?.['min']">السعة يجب أن تكون أكبر من صفر</small>
+            </div>
+          </div>
+
+          <!-- ✅ إضافة validation لمكان الغرفة -->
+           
+          <div class="form-group mb-2">
+            <label>المكان<span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control"
+              [(ngModel)]="roomLocation"
+              name="roomLocation"
+              #roomLocationInput="ngModel"
+              required
+              min="1"
+              [class.is-invalid]="roomLocationInput.invalid && roomLocationInput.touched" />
+            <div class="invalid-feedback" *ngIf="roomLocationInput.invalid && roomLocationInput.touched">
+              <small *ngIf="roomLocationInput.errors?.['required']">يجب إدخال مكان الغرفة</small>
+            </div>
+          </div>
+          <!-- ✅ إضافة validation للمبني -->
+          <div class="form-group mb-2">
+            <label>المبني <span class="text-danger">*</span></label>
+            <select 
+              class="form-control drop"
+              [(ngModel)]="selectedBuildingId"
+              name="building"
+              #buildingSelect="ngModel"
+              required
+              [class.is-invalid]="buildingSelect.invalid && buildingSelect.touched">
+              <option value="">اختر المبني</option>
+              @for (building of buildings().data; track building.id) {
+                <option [value]="building.id">
+                  {{ building.name }}
+                </option>
+              }
+            </select>
+            <div class="invalid-feedback" *ngIf="buildingSelect.invalid && buildingSelect.touched">
+              <small>يجب اختيار المبني</small>
+            </div>
+          </div>
+
+          <div class="form-check form-switch mt-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [(ngModel)]="haveProjector"
+              name="haveProjector"
+              id="haveProjector" />
+
+            <label class="form-check-label" for="haveProjector">
+              هل تحتوي الغرفة على بروجكتور؟
+            </label>
+          </div>
         </div>
 
-        <div class="form-group mb-2">
-          <label>سعة الغرفة</label>
-          <input type="number" class="form-control" />
+        <!-- FOOTER -->
+        <!-- ✅ تعطيل زر الحفظ إذا كان الفورم غير صالح -->
+        <div class="modal-footer text-center">
+          <button 
+            class="btn btn-primary me-2" 
+            type="button"
+            (click)="saveRoom()"
+            [disabled]="roomForm.invalid">
+            حفظ
+          </button>
+          <button class="btn btn-danger" type="button" (click)="closeModal()">إلغاء</button>
         </div>
-
-        <div class="form-group mb-2">
-          <label>المبني</label>
-          <select class="form-control">
-            <option>اختر المبني</option>
-          </select>
-        </div>
-
-        <div class="form-check form-switch mt-3">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            [(ngModel)]="haveProjector"
-            id="haveProjector"
-          />
-          <label class="form-check-label" for="haveProjector">
-            هل تحتوي الغرفة على بروجكتور؟
-          </label>
-        </div>
-      </div>
-
-      <!-- FOOTER -->
-      <div class="modal-footer text-center">
-        <button class="btn btn-primary me-2">حفظ</button>
-        <button class="btn btn-danger" (click)="closeModal()">إلغاء</button>
-      </div>
+      </form>
 
     </div>
   </div>
 </div>
-
 
 <!-- MODAL تأكيد الحذف -->
 <div
@@ -88,8 +158,7 @@
   [class.show]="showDeleteModal"
   [style.display]="showDeleteModal ? 'block' : 'none'"
   tabindex="-1"
-  role="dialog"
->
+  role="dialog">
 
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -116,4 +185,3 @@
     </div>
   </div>
 </div>
-
