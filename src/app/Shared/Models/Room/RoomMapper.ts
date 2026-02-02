@@ -9,7 +9,7 @@ export class RoomMapper {
       name: dto.name,
       capacity: dto.capacity,
       location: dto.location,
-      Building: dto.building.name,
+      Building: dto.building ? dto.building.name : '',
       projectorStatus: dto.haveProjector ? 'يوجد' : 'لا',
     };
   }

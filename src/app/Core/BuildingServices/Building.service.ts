@@ -31,25 +31,25 @@ export class BuildingService {
       );
   }
 
-  getBuildings(): Observable<ApiResponseDto<BuildingVM[]>> {
+  getBuildings(): Observable<ApiResponseDto<BuildingDTO[]>> {
   return this.http
     .get<ApiResponseDto<BuildingDTO[]>>(`${this.apiUrl}`)
     .pipe(
       map(response => ({
         ...response,
-        data: BuildingMapper.fromDtoList(response.data)
+        data: response.data
       }))
     );
     
 }
 
   // جلب قاعة واحدة
-  getBuildingById(id: number): Observable<ApiResponseDto<BuildingVM>> {
+  getBuildingById(id: number): Observable<ApiResponseDto<BuildingDTO>> {
     return this.http.get<ApiResponseDto<BuildingDTO>>(`${this.apiUrl}/${id}`)
       .pipe(
         map(response => ({
           ...response,
-          data: BuildingMapper.fromDto(response.data)
+          data: response.data
         }))
       );
   }

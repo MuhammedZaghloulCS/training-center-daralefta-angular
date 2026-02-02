@@ -7,9 +7,8 @@ import { RoomVM } from '../../Shared/Models/Room/RoomVM';
 import { RoomMapper } from '../../Shared/Models/Room/RoomMapper';
 import { map } from 'rxjs/operators';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoomService {
   private apiUrl = 'https://localhost:7294/api/room';
@@ -17,37 +16,36 @@ export class RoomService {
   constructor(private http: HttpClient) {}
 
   // جلب القاعات مع Pagination
-  getPaginatedRooms(pageNumber: number = 1, pageSize: number = 10): Observable<ApiResponseDto<RoomVM[]>> {
+  getPaginatedRooms(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+  ): Observable<ApiResponseDto<RoomVM[]>> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-    return this.http.get<ApiResponseDto<RoomDTO[]>>(`${this.apiUrl}/paged`, { params })
-      .pipe(
-        map(response => ({
-          ...response,
-          data: RoomMapper.fromDtoList(response.data)
-        }))
-      );
+    return this.http.get<ApiResponseDto<RoomDTO[]>>(`${this.apiUrl}/paged`, { params }).pipe(
+      map((response) => ({
+        ...response,
+        data: RoomMapper.fromDtoList(response.data),
+      })),
+    );
   }
 
-  getRooms(): Observable<RoomVM[]> {
-  return this.http
-    .get<ApiResponseDto<RoomDTO[]>>(`${this.apiUrl}`)
-    .pipe(
-      map(response => RoomMapper.fromDtoList(response.data))
-    );
-}
+  getRooms(): Observable<RoomDTO[]> {
+    return this.http
+      .get<ApiResponseDto<RoomDTO[]>>(`${this.apiUrl}`)
+      .pipe(map((response) => response.data));
+  }
 
   // جلب قاعة واحدة
-  getRoomById(id: number): Observable<ApiResponseDto<RoomVM>> {
-    return this.http.get<ApiResponseDto<RoomDTO>>(`${this.apiUrl}/${id}`)
-      .pipe(
-        map(response => ({
-          ...response,
-          data: RoomMapper.fromDto(response.data)
-        }))
-      );
+  getRoomById(id: number): Observable<ApiResponseDto<RoomDTO>> {
+    return this.http.get<ApiResponseDto<RoomDTO>>(`${this.apiUrl}/${id}`).pipe(
+      map((response) => ({
+        ...response,
+        data: response.data,
+      })),
+    );
   }
 
   // إضافة قاعة
@@ -65,4 +63,3 @@ export class RoomService {
     return this.http.delete<ApiResponseDto<boolean>>(`${this.apiUrl}/${id}`);
   }
 }
-
