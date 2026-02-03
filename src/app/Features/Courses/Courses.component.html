@@ -6,12 +6,12 @@
   (search)="onSearch($event)">
 </app-main-layout>
 
-<app-sahred-table 
+<app-shared-table 
   [tableData]="displayedCourses" 
   [columns]="columns"
   (edit)="onEdit($event)"
   (delete)="onDelete($event)">
-</app-sahred-table>
+</app-shared-table>
 
 <app-afterTable
   [totalItems]="coursesData().totalItems"

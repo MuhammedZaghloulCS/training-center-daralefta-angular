@@ -1,7 +1,7 @@
 import { ApiResponseDto } from './../../Shared/Models/ApiResponseDto';
 import { RoomService } from '../../Core/RoomServices/Room.service';
 import { Component, OnInit, signal } from '@angular/core';
-import { SahredTableComponent } from '../../Shared/shared-table/sahred-table.component';
+import {  SharedTableComponent } from '../../Shared/shared-table/shared-table.component';
 import { MainLayoutComponent } from '../../Shared/Main-layout/Main-layout.component';
 import { FormsModule } from '@angular/forms';
 import { RoomVM } from '../../Shared/Models/Room/RoomVM';
@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
   templateUrl: './Rooms.component.html',
   styleUrls: ['./Rooms.component.css'],
   imports: [
-    SahredTableComponent,
+    SharedTableComponent,
     MainLayoutComponent,
     FormsModule,
     AfterTableComponent,

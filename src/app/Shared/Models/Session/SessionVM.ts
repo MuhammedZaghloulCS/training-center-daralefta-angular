@@ -1,6 +1,6 @@
 export class SessionVM {
   id!: number;
-  sessionDate!: string; // keep ISO string, format in UI if needed
+  sessionDate!: string; // format: YYYY-MM-DD (date only)
   startTime!: string;
   endTime!: string;
   topic!: string;

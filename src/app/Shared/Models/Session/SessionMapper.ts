@@ -2,6 +2,7 @@ import { CourseService } from '../../../Core/CourseServices/Course.service';
 import { RoomService } from './../../../Core/RoomServices/Room.service';
 import { SessionDTO } from './SessionDTO';
 import { SessionVM } from './SessionVM';
+import { formatToYMD } from '../../Helpers/date.util';
 
 export class SessionMapper {
   static roomService: RoomService;
@@ -14,7 +15,7 @@ export class SessionMapper {
   static fromDto(dto: SessionDTO): SessionVM {
     return {
       id: dto.id,
-      sessionDate: dto.sessionDate,
+      sessionDate: formatToYMD(dto.sessionDate),
       startTime: dto.startTime,
       endTime: dto.endTime,
       topic: dto.topic,

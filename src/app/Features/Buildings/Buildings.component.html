@@ -1,0 +1,120 @@
+<app-main-layout 
+  [pageTitle]="'إدارة المباني'" 
+  [buttonText]="'إضافة مبنى'"
+  (buttonClick)="openModal()"
+  (pageSizeChange)="onPageSizeChanged($event)"
+  (search)="onSearch($event)">
+</app-main-layout>
+
+<app-shared-table 
+  [tableData]="displayedBuildings" 
+  [columns]="columns"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)">
+</app-shared-table>
+
+<app-afterTable
+  [totalItems]="buildingsData().totalItems"
+  [currentPage]="buildingsData().currentPage"
+  [pageSize]="buildingsData().pageSize"
+  [hasPrevious]="buildingsData().hasPrevious"
+  [hasNext]="buildingsData().hasNext"
+  (nextPageCounter)="onNextPage($event)"
+  (previousPageCounter)="onPreviousPage($event)"/>
+
+<!-- MODAL إضافة/تعديل -->
+<div
+  class="modal fade"
+  [class.show]="showModal"
+  [style.display]="showModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">{{ isEditMode ? 'تعديل بيانات المبنى' : 'إضافة مبنى جديد' }}</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <form #buildingForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group mb-2">
+            <label>اسم المبنى <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="buildingName"
+              name="buildingName"
+              #buildingNameInput="ngModel"
+              required
+              [class.is-invalid]="buildingNameInput.invalid && buildingNameInput.touched" />
+            <div class="invalid-feedback" *ngIf="buildingNameInput.invalid && buildingNameInput.touched">
+              <small>يجب إدخال اسم المبنى</small>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>الوصف</label>
+            <textarea 
+              class="form-control"
+              [(ngModel)]="buildingDescription"
+              name="buildingDescription"></textarea>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer text-center">
+          <button 
+            class="btn btn-primary me-2" 
+            type="button"
+            (click)="saveBuilding()"
+            [disabled]="buildingForm.invalid">
+            حفظ
+          </button>
+          <button class="btn btn-danger" type="button" (click)="closeModal()">إلغاء</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL تأكيد الحذف -->
+<div
+  class="modal fade"
+  [class.show]="showDeleteModal"
+  [style.display]="showDeleteModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">تأكيد الحذف</h5>
+        <button type="button" class="close" (click)="closeDeleteModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف هذا المبنى؟</p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer text-center">
+        <button class="btn btn-danger me-2" (click)="confirmDelete()">حذف</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">إلغاء</button>
+      </div>
+
+    </div>
+  </div>
+</div>

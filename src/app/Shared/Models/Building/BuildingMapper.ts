@@ -6,6 +6,7 @@ export class BuildingMapper {
         return {
           id: dto.id,
           name: dto.name,
+          description: dto.description,
         };
       }
 

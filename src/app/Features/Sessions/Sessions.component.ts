@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
-import { SahredTableComponent } from '../../Shared/shared-table/sahred-table.component';
+import { SharedTableComponent } from '../../Shared/shared-table/shared-table.component';
 import { MainLayoutComponent } from '../../Shared/Main-layout/Main-layout.component';
 import { AfterTableComponent } from '../../Shared/afterTable/afterTable.component';
 import { ApiResponseDto } from '../../Shared/Models/ApiResponseDto';
@@ -28,7 +28,7 @@ import { BuildingDTO } from '../../Shared/Models/Building/BuildingDTO';
   imports: [
     CommonModule,
     FormsModule,
-    SahredTableComponent,
+    SharedTableComponent,
     MainLayoutComponent,
     AfterTableComponent,
   ],
@@ -293,7 +293,7 @@ console.log('FIXED startTime:', fixedStartTime);
   onEdit(row: SessionVM) {
     this.isEditMode = true;
     this.editingSessionId = row.id;
-    this.sessionDate = row.sessionDate.split('T')[0];
+    this.sessionDate = row.sessionDate || '';
     
     // Extract just HH:mm from the time
     this.startTime = row.startTime.substring(0, 5);

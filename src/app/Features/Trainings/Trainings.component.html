@@ -1,0 +1,123 @@
+<app-main-layout 
+  [pageTitle]="'إدارة البرامج التدريبية'" 
+  [buttonText]="'إضافة تدريب'"
+  (buttonClick)="openModal()"
+  (pageSizeChange)="onPageSizeChanged($event)"
+  (search)="onSearch($event)">
+</app-main-layout>
+
+<app-shared-table 
+  [tableData]="displayedTrainings" 
+  [columns]="columns"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  [isParentTraining]="true">
+</app-shared-table>
+
+<app-afterTable
+  [totalItems]="trainingsData().totalItems"
+  [currentPage]="trainingsData().currentPage"
+  [pageSize]="trainingsData().pageSize"
+  [hasPrevious]="trainingsData().hasPrevious"
+  [hasNext]="trainingsData().hasNext"
+  (nextPageCounter)="onNextPage($event)"
+  (previousPageCounter)="onPreviousPage($event)"/>
+
+<!-- MODAL إضافة/تعديل -->
+<div
+  class="modal fade"
+  [class.show]="showModal"
+  [style.display]="showModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">{{ isEditMode ? 'تعديل بيانات التدريب' : 'إضافة تدريب جديد' }}</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <form #trainingForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group mb-2">
+            <label>العنوان <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="trainingTitle"
+              name="trainingTitle"
+              #trainingTitleInput="ngModel"
+              required
+              [class.is-invalid]="trainingTitleInput.invalid && trainingTitleInput.touched" />
+            <div class="invalid-feedback" *ngIf="trainingTitleInput.invalid && trainingTitleInput.touched">
+              <small>يجب إدخال عنوان التدريب</small>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>تاريخ البداية</label>
+            <input type="date" class="form-control" [(ngModel)]="trainingStart" name="trainingStart" />
+          </div>
+
+          <div class="form-group mb-2">
+            <label>تاريخ النهاية</label>
+            <input type="date" class="form-control" [(ngModel)]="trainingEnd" name="trainingEnd" />
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer text-center">
+          <button 
+            class="btn btn-primary me-2" 
+            type="button"
+            (click)="saveTraining()"
+            [disabled]="trainingForm.invalid">
+            حفظ
+          </button>
+          <button class="btn btn-danger" type="button" (click)="closeModal()">إلغاء</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL تأكيد الحذف -->
+<div
+  class="modal fade"
+  [class.show]="showDeleteModal"
+  [style.display]="showDeleteModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">تأكيد الحذف</h5>
+        <button type="button" class="close" (click)="closeDeleteModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف هذا التدريب؟</p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer text-center">
+        <button class="btn btn-danger me-2" (click)="confirmDelete()">حذف</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">إلغاء</button>
+      </div>
+
+    </div>
+  </div>
+</div>

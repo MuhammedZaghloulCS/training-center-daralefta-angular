@@ -6,7 +6,9 @@
         @for (col of columns; track $index) {
           <th>{{ col }}</th>
         }
-
+        @if (isParentTraining) {
+          <th>الإستبيانات</th>
+        }
         <th>الإجراءات</th>
       </tr>
     </thead>
@@ -15,6 +17,16 @@
         <tr>
           @for (key of getObjectKeys(row); track key) {
             <td>{{ row[key] }}</td>
+          }
+          @if (isParentTraining) {
+            <td>
+              <a
+                routerLink="/surveys" [queryParams]="{trainingid:row.id}"
+                style="color: blue; text-decoration: underline; cursor: pointer"
+              >
+                الاستبيانات
+              </a>
+            </td>
           }
 
           <td class="actions-cell">

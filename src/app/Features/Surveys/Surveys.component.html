@@ -1,0 +1,109 @@
+<app-main-layout 
+  [pageTitle]="'إدارة الاستبيانات'" 
+  [buttonText]="'إضافة استبيان'"
+  (buttonClick)="openModal()"           
+  (pageSizeChange)="onPageSizeChanged($event)"
+  (search)="onSearch($event)">
+</app-main-layout>
+
+<app-shared-table 
+  [tableData]="displayedSurveys" 
+  [columns]="columns"
+  (edit)="onEdit($event)"                
+  (delete)="openDeleteModal($event)">
+</app-shared-table>
+
+<app-afterTable
+  [totalItems]="surveysData().totalItems"
+  [currentPage]="surveysData().currentPage"
+  [pageSize]="surveysData().pageSize"
+  [hasPrevious]="surveysData().hasPrevious"
+  [hasNext]="surveysData().hasNext"
+  (nextPageCounter)="onNextPage($event)"
+  (previousPageCounter)="onPreviousPage($event)"/>
+
+<!-- MODAL تأكيد الحذف -->
+<div
+  class="modal fade"
+  [class.show]="showDeleteModal"
+  [style.display]="showDeleteModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">تأكيد الحذف</h5>
+        <button type="button" class="close" (click)="closeDeleteModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف هذا الاستبيان؟</p>
+        <p *ngIf="surveyToDelete" class="text-muted">
+          العنوان: {{ surveyToDelete.title }}
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer text-center">
+        <button class="btn btn-danger me-2" (click)="confirmDelete()">حذف</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">إلغاء</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-between">
+        <h5 class="modal-title">{{ isEditMode ? 'تعديل الاستبيان' : 'إضافة استبيان' }}</h5>
+        <button type="button" class="close" (click)="closeModal()"><span>&times;</span></button>
+      </div>
+
+      <form #surveyForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-2">
+            <label>العنوان <span class="text-danger">*</span></label>
+            <input type="text" name="surveyTitle" class="form-control" [(ngModel)]="surveyTitle" required />
+          </div>
+
+          <div class="mb-2">
+            <label>الوصف</label>
+            <textarea name="surveyDesc" class="form-control" [(ngModel)]="surveyDescription"></textarea>
+          </div>
+
+          <div class="mb-2">
+            <label>التدريب</label>
+            <select class="form-control" name="training" [(ngModel)]="selectedTrainingId">
+              <option [value]="null">بدون</option>
+              <option *ngFor="let t of trainings" [value]="t.id">{{ t.title }}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <label>التصنيف</label>
+            <select class="form-control" name="category" [(ngModel)]="selectedCategoryId">
+              <option [value]="null">بدون</option>
+              <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" (click)="saveSurvey()" [disabled]="surveyForm.invalid">
+            حفظ
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="closeModal()">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

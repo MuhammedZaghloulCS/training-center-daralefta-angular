@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { SahredTableComponent } from '../../Shared/shared-table/sahred-table.component';
+import {  SharedTableComponent } from '../../Shared/shared-table/shared-table.component';
 import { MainLayoutComponent } from '../../Shared/Main-layout/Main-layout.component';
 import { FormsModule } from '@angular/forms';
 import { AfterTableComponent } from '../../Shared/afterTable/afterTable.component';
@@ -15,12 +15,12 @@ import { CourseVM } from '../../Shared/Models/Course/CourseVM';
   templateUrl: './Courses.component.html',
   styleUrls: ['./Courses.component.css'],
   imports: [
-    SahredTableComponent,
+    SharedTableComponent,
     MainLayoutComponent,
     FormsModule,
     AfterTableComponent,
-    CommonModule,
-  ]
+    CommonModule
+]
 })
 export class CoursesComponent implements OnInit {
   public coursesData = signal<ApiResponseDto<CourseVM[]>>({
